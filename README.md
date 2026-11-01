@@ -156,44 +156,52 @@ phone camera in decent light is enough. Prefer hands, tools and devices over fac
 stock photos of people carry model-release requirements, and implying a stock model
 works at the kiosk can be misleading conduct under the Australian Consumer Law.
 
-## 🎨 Colour
+## 🎨 Colour — "Amber"
 
-The palette comes from Manu's own logo rather than a generic "high-converting" scheme,
-so the site, the business card and the signage all read as one business.
+Deep teal-navy structure with a **gold call button**. Chosen for contrast: dark ink on
+gold measures **10.15:1**, which makes the Call button the loudest element on every page.
+For a repair shop whose customers are mostly phoning or walking in, that button is the
+whole conversion path.
 
-| Token | Value | Used for |
-|---|---|---|
-| `--brand` | `#1f6fd0` | Logo blue. Structure, headings accents, card icons, the numbered steps. |
-| `--accent` | `#ef6a16` | Logo orange. **Fills only** — buttons, the call bar, the call FAB. |
-| `--accent-ink` | `#0d1420` | Text sitting *on* orange fills. |
-| `--accent-text` | `#c2410c` | Orange *text* on light backgrounds (eyebrows, "More info"). |
-| `--navy` | `#080d18` | Hero, footer, CTA bands — matches the business card. |
+| Token | Light | Dark | Used for |
+|---|---|---|---|
+| `--accent` | `#ffb020` | `#ffb020` | Gold. **Fills only** — buttons, call bar, call FAB. |
+| `--accent-ink` | `#1a1203` | `#1a1203` | Text *on* gold. 10.15:1. |
+| `--accent-text` | `#8a5a00` | `#ffc451` | Gold *text* on page backgrounds. |
+| `--brand` | `#0b6c86` | `#45b9da` | Deep teal. Structure, card icons, numbered steps. |
+| `--navy` | `#06181f` | `#040f14` | Hero, footer, CTA bands. |
+| `--bg` | `#ffffff` | `#081a21` | Page background. |
 
-Two deliberate rules:
+**Both light and dark are built**, switching automatically with the visitor's device
+setting via `prefers-color-scheme`. `data-theme="light"` or `data-theme="dark"` on
+`<html>` forces one if you ever need to.
 
-**Orange is reserved for actions.** Blue carries the structure and the illustrations;
-orange appears on things you can click. If orange gets used decoratively, the Call
-button stops standing out, and that button is the whole point of the site. Keep it that
-way when adding sections.
+### Two rules to keep
 
-**Everything meets WCAG AA (4.5:1 for text).** This was measured, not eyeballed. The
-first pass failed in four places — most importantly the Call button, where white on the
-logo orange was only **3.11:1**, below the 4.5:1 threshold for its text size. Rather
-than dull the brand orange to make white work (which would have meant a muddy
-`#bf5512`), the fill keeps the exact logo orange and the text on it went near-black,
-which measures **5.93:1**. Orange text on white backgrounds uses the darker
-`--accent-text` at **5.18:1**.
+**Gold means "you can click this."** Teal carries structure and the illustrations; gold
+only ever appears on actions. The moment gold goes decorative, the Call button stops
+standing out.
 
-This matters commercially as well as legally: the Call button is the main conversion
-path, a lot of the audience is reading it one-handed on a phone in a shopping centre,
-and under the *Disability Discrimination Act 1992* accessibility of a public-facing
-service is a genuine consideration.
+**Everything is measured, not eyeballed.** Current state: **0 failures across 12
+pairings in light mode and 12 in dark.** If you change a colour, re-check it — any
+contrast checker works, WebAIM's is the usual one. Text needs 4.5:1 (3:1 at 18.66px bold
+or 24px regular and above); icons and borders need 3:1.
 
-Current state: **12 of 12 colour pairings pass AA**, in both light and dark mode.
+This matters commercially as well as legally: much of the audience is reading
+one-handed on a phone in a shopping centre, and under the *Disability Discrimination
+Act 1992* the accessibility of a public-facing service is a real consideration.
 
-If you change a colour, re-check it. Any contrast checker works — WebAIM's is the usual
-one. Text needs 4.5:1 (3:1 if it's 18.66px bold or 24px regular and up); icons and
-borders need 3:1.
+### A note on the logo
+
+Manu's logo is blue and orange, which is close to but not identical to the site's teal
+and gold. It reads as a deliberate family rather than a clash, and the logo is his
+identity so it was left untouched. If he ever has it redrawn, teal and gold would tie
+it together completely.
+
+### Illustrations follow the palette
+
+`assets/img/*.svg` and `assets/og-image.png` were regenerated in teal and gold to match.
+If you change the palette again, regenerate them too or they'll fight the page.
 
 ## 📷 Copyright &mdash; what's on this site and where it came from
 

@@ -63,3 +63,10 @@ faces.
 owned by someone.
 
 See the copyright section in the root `README.md` for the full position.
+
+## One thing you'll see in the browser console
+
+Until a photo exists, its probe request 404s, so the dev-tools console shows up to seven
+404s for files in this folder. **That is the fallback working, not a bug** — the probe
+failing is exactly what keeps the illustration in place. Each 404 disappears as you add
+that photo.

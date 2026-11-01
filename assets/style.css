@@ -6,24 +6,26 @@
    ========================================================= */
 
 :root {
-  /* Brand — swap these two if a logo sets a different palette */
-  --accent:        #ef6a16;   /* logo orange - button + accent FILLS */
-  --accent-ink:    #0d1420;   /* text ON orange fills: 5.93:1, passes AA */
-  --accent-text:   #c2410c;   /* orange TEXT on light surfaces: 5.18:1 */
-  --accent-soft:   #fff0e4;
-  --brand:         #1f6fd0;   /* logo blue - brand / structure */
-  --brand-soft:    #e8f1fc;
+  /* Brand - teal-navy structure with a gold call to action.
+     Gold is the highest-contrast accent available: dark ink on gold
+     measures 10.15:1, so the Call button is the loudest thing on the page. */
+  --accent:        #ffb020;   /* gold - button + accent FILLS */
+  --accent-ink:    #1a1203;   /* text ON gold: 10.15:1 */
+  --accent-text:   #8a5a00;   /* gold-brown TEXT on light surfaces: 5.93:1 */
+  --accent-soft:   #fff2d6;
+  --brand:         #0b6c86;   /* deep teal - structure, icons, steps */
+  --brand-soft:    #dcf0f5;
 
-  --ink:           #121c28;
-  --ink-2:         #2b3a4d;
-  --muted:         #5c6f85;
+  --ink:           #07171c;
+  --ink-2:         #1d3640;
+  --muted:         #4e6771;
   --bg:            #ffffff;
-  --surface:       #f4f7fa;
-  --surface-2:     #eaf0f6;
-  --border:        #dde5ee;
-  --navy:          #080d18;
-  --on-navy:       #e8eef6;
-  --on-navy-muted: #94a6bd;
+  --surface:       #f0f5f6;
+  --surface-2:     #e2ecee;
+  --border:        #d3e2e5;
+  --navy:          #06181f;
+  --on-navy:       #e8f3f6;
+  --on-navy-muted: #9fbcc6;
 
   --ok:            #1a7f4b;
 
@@ -41,25 +43,33 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ink:         #eaf1f8;
-    --ink-2:       #c6d4e3;
-    --muted:       #9bacc1;
-    --bg:          #0c1320;
-    --surface:     #131d2b;
-    --surface-2:   #1b2737;
-    --border:      #253346;
-    --navy:        #070c15;
-    --accent-soft: #2d1a0b;
-    --brand-soft:  #0f1f33;
-    --accent-text: #ff8a3d;
+    --ink:         #e9f4f7;
+    --ink-2:       #c3d8de;
+    --muted:       #93aeb7;
+    --bg:          #081a21;
+    --surface:     #102a34;
+    --surface-2:   #183743;
+    --border:      #23424e;
+    --navy:        #040f14;
+    --brand:       #45b9da;
+    --brand-soft:  #0d2b35;
+    --accent:      #ffb020;
+    --accent-ink:  #1a1203;
+    --accent-text: #ffc451;
+    --accent-soft: #2e2208;
+    --on-navy:     #e8f3f6;
+    --on-navy-muted: #9fbcc6;
     --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
     --shadow-lg:   0 2px 4px rgba(0,0,0,.45), 0 18px 48px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"] {
-  --ink: #eaf1f8; --ink-2: #c6d4e3; --muted: #9bacc1;
-  --bg: #0c1320; --surface: #131d2b; --surface-2: #1b2737;
-  --border: #253346; --navy: #05080f; --accent-soft: #2d1a0b; --brand-soft: #0f1f33; --accent-text: #ff8a3d;
+  --ink: #e9f4f7; --ink-2: #c3d8de; --muted: #93aeb7;
+  --bg: #081a21; --surface: #102a34; --surface-2: #183743;
+  --border: #23424e; --navy: #040f14;
+  --brand: #45b9da; --brand-soft: #0d2b35;
+  --accent: #ffb020; --accent-ink: #1a1203; --accent-text: #ffc451;
+  --accent-soft: #2e2208;
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
   --shadow-lg: 0 2px 4px rgba(0,0,0,.45), 0 18px 48px rgba(0,0,0,.5);
 }
@@ -214,8 +224,8 @@ img.logo__mark {
 .hero::after {
   content: ""; position: absolute; inset: 0;
   background:
-    radial-gradient(900px 420px at 86% -12%, rgba(31,111,208,.40), transparent 66%),
-    radial-gradient(620px 360px at 8% 104%, rgba(239,106,22,.22), transparent 62%);
+    radial-gradient(900px 420px at 86% -12%, rgba(13,124,152,.46), transparent 66%),
+    radial-gradient(620px 360px at 8% 104%, rgba(255,176,32,.20), transparent 62%);
   pointer-events: none;
 }
 .hero > .wrap { position: relative; z-index: 1; }
@@ -277,7 +287,7 @@ img.logo__mark {
   counter-increment: step; content: counter(step);
   position: absolute; top: 0; left: 0;
   width: 44px; height: 44px; border-radius: 50%;
-  background: linear-gradient(145deg, #2e86e0, var(--brand)); color: #fff;
+  background: linear-gradient(145deg, #13a0c2, var(--brand)); color: #fff;
   font-family: var(--font-head); font-weight: 700; font-size: 1.15rem;
   display: grid; place-items: center;
 }
@@ -351,7 +361,7 @@ img.logo__mark {
 }
 .band::after {
   content: ""; position: absolute; inset: 0;
-  background: radial-gradient(600px 300px at 50% -20%, rgba(31,111,208,.38), transparent 70%);
+  background: radial-gradient(600px 300px at 50% -20%, rgba(13,124,152,.42), transparent 70%);
   pointer-events: none;
 }
 .band > * { position: relative; z-index: 1; }
