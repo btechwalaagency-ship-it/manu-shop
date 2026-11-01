@@ -84,7 +84,7 @@ Google reviews.
 | ABN | footer, `about.html` | See above |
 | Confirm trading hours | `contact.html` + homepage JSON-LD | See above |
 | Confirm WhatsApp number | `fabs()` block | Link is `wa.me/61470282957`, built from the card's mobile — confirm it's on WhatsApp |
-| Domain | canonical URLs, `sitemap.xml` | Currently `https://mmrepairmaster.com.au` — **confirm it's registered**; find-and-replace if different |
+| Custom domain | canonical URLs, `sitemap.xml`, `robots.txt` | Site currently lives at the GitHub Pages URL. See "Moving to a custom domain" below when a domain is registered |
 | Form backend | `contact.html` | Works right now via mailto fallback — see below |
 | Photos | — | No photographs anywhere; see below |
 
@@ -328,24 +328,48 @@ hosts, which can't run server code.
 python3 -m http.server 8000
 ```
 
-## Publishing
+## Published
 
-The site is static, so it runs anywhere with no code changes.
+The site is live on **GitHub Pages**, served from the `main` branch root:
 
-**GitHub Pages** — Settings → Pages → Deploy from a branch → `main` → `/ (root)`.
-Add the domain under Custom domain, add a `CNAME` file containing it, and point DNS
-at GitHub Pages.
+```
+https://btechwalaagency-ship-it.github.io/manu-shop/
+```
 
-**Cloudflare Pages** — free, deploys from this repo, served from Australian edge
-locations (Sydney, Melbourne, Brisbane, Perth, Adelaide). Good choice given the
-customers are all in Perth.
+`.nojekyll` tells Pages to serve the files verbatim rather than running them through
+Jekyll. All paths in the HTML are relative, so the site works correctly from the
+`/manu-shop/` subdirectory Pages serves it at — verified across all 12 pages, their
+assets and every internal link.
 
-**Australian-hosted** — an AU cPanel host (FTP the folder up), or AWS S3 + CloudFront
-with the Sydney `ap-southeast-2` region as origin.
+Pushing to `main` redeploys. It usually takes under a minute.
 
-Note: a `.com.au` domain requires Australian *presence* (ABN), not Australian *hosting*.
-Server location is at most a very weak search signal — the `.com.au` domain and a Google
-Business Profile do the geo-targeting work.
+### Moving to a custom domain
+
+Canonical URLs, `og:url`, `og:image`, `sitemap.xml`, `robots.txt` and the JSON-LD all
+currently point at the GitHub Pages address, so search engines index that as the real
+site. When a domain is registered, all of that must move with it or the new domain will
+keep pointing search engines back at github.io.
+
+1. Swap the base URL everywhere:
+
+   ```bash
+   grep -rl 'btechwalaagency-ship-it.github.io/manu-shop/' --include='*.html' --include='*.xml' --include='*.txt' . \
+     | xargs sed -i 's|https://btechwalaagency-ship-it.github.io/manu-shop/|https://YOURDOMAIN.com.au/|g'
+   ```
+
+2. Add a `CNAME` file at the repo root containing just the domain, no protocol:
+
+   ```
+   mmrepairmaster.com.au
+   ```
+
+3. In **Settings → Pages**, set the Custom domain, then point DNS at GitHub Pages —
+   four `A` records for the apex, or a `CNAME` on `www`.
+
+4. Tick **Enforce HTTPS** once the certificate has provisioned (can take a few hours).
+
+A `.com.au` requires Australian presence — an ABN, ACN or registered business name —
+under auDA rules. It has never required Australian hosting.
 
 ## SEO in place
 

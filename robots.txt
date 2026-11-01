@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mmrepairmaster.com.au/sitemap.xml
+Sitemap: https://btechwalaagency-ship-it.github.io/manu-shop/sitemap.xml
