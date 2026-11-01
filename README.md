@@ -123,6 +123,45 @@ photos of the kiosk, repairs in progress and finished CCTV installs would lift i
 considerably. Don't pull images from Google Images or from the reference site the client
 supplied; use Manu's own, or properly licensed stock.
 
+## 🎨 Colour
+
+The palette comes from Manu's own logo rather than a generic "high-converting" scheme,
+so the site, the business card and the signage all read as one business.
+
+| Token | Value | Used for |
+|---|---|---|
+| `--brand` | `#1f6fd0` | Logo blue. Structure, headings accents, card icons, the numbered steps. |
+| `--accent` | `#ef6a16` | Logo orange. **Fills only** — buttons, the call bar, the call FAB. |
+| `--accent-ink` | `#0d1420` | Text sitting *on* orange fills. |
+| `--accent-text` | `#c2410c` | Orange *text* on light backgrounds (eyebrows, "More info"). |
+| `--navy` | `#080d18` | Hero, footer, CTA bands — matches the business card. |
+
+Two deliberate rules:
+
+**Orange is reserved for actions.** Blue carries the structure and the illustrations;
+orange appears on things you can click. If orange gets used decoratively, the Call
+button stops standing out, and that button is the whole point of the site. Keep it that
+way when adding sections.
+
+**Everything meets WCAG AA (4.5:1 for text).** This was measured, not eyeballed. The
+first pass failed in four places — most importantly the Call button, where white on the
+logo orange was only **3.11:1**, below the 4.5:1 threshold for its text size. Rather
+than dull the brand orange to make white work (which would have meant a muddy
+`#bf5512`), the fill keeps the exact logo orange and the text on it went near-black,
+which measures **5.93:1**. Orange text on white backgrounds uses the darker
+`--accent-text` at **5.18:1**.
+
+This matters commercially as well as legally: the Call button is the main conversion
+path, a lot of the audience is reading it one-handed on a phone in a shopping centre,
+and under the *Disability Discrimination Act 1992* accessibility of a public-facing
+service is a genuine consideration.
+
+Current state: **12 of 12 colour pairings pass AA**, in both light and dark mode.
+
+If you change a colour, re-check it. Any contrast checker works — WebAIM's is the usual
+one. Text needs 4.5:1 (3:1 if it's 18.66px bold or 24px regular and up); icons and
+borders need 3:1.
+
 ## 📷 Copyright &mdash; what's on this site and where it came from
 
 Not legal advice. But this is the asset register, so the provenance of everything is
