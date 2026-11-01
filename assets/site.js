@@ -40,6 +40,33 @@
     if (path === here) a.setAttribute("aria-current", "page");
   });
 
+  /* ---- contact form ----
+     If no form backend is configured yet, fall back to opening the
+     visitor's mail client with the enquiry pre-filled, so the form
+     still works the day the site goes live. Swap the form's action
+     for a Formspree endpoint to collect submissions properly. */
+  var form = document.querySelector(".form");
+  if (form && /\[YOUR-FORM-ID\]/.test(form.getAttribute("action") || "")) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var g = function (n) {
+        var el = form.querySelector('[name="' + n + '"]');
+        return el ? el.value.trim() : "";
+      };
+      var subject = "Website enquiry" + (g("service") ? " \u2014 " + g("service") : "");
+      var body = [
+        "Name: " + g("name"),
+        "Phone: " + g("phone"),
+        "Email: " + g("email"),
+        "Service: " + (g("service") || "Not specified"),
+        "",
+        g("message")
+      ].join("\n");
+      window.location.href = "mailto:mmrepairmaster@gmail.com?subject=" +
+        encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    });
+  }
+
   /* ---- scroll reveal ---- */
   var targets = document.querySelectorAll(".reveal");
   if (!targets.length) return;

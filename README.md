@@ -47,40 +47,81 @@ Seven, taken from the business card:
 
 All copy is original, written for this site.
 
-## ⚠️ Before it goes live
+## What's filled in, and what still needs Manu
 
-Anything in `[SQUARE BRACKETS]` renders on the page exactly like that:
+Everything from the business card is on the site: name, tagline, the
+`SALES · REPAIR · DATA RECOVERY` line, phone, email, Instagram handle, the kiosk
+address, and all the services from the card's "What We Offer" panel.
 
-```bash
-grep -rn '\[' --include='*.html' .
-```
+**Trading hours** are set to the standard Perth metro retail pattern:
 
-| What | Where | Needed |
+| | |
+|---|---|
+| Mon–Wed, Fri | 9:00am – 5:30pm |
+| Thursday | 9:00am – 9:00pm (late night) |
+| Saturday | 9:00am – 5:00pm |
+| Sunday | 11:00am – 5:00pm |
+
+These are **an assumption based on typical centre trading, not confirmed with Manu.**
+Check them against The Spring Shopping Centre's actual hours. They appear in two
+places — the table in `contact.html` and the `openingHoursSpecification` block in the
+homepage JSON-LD. Update both.
+
+**ABN — deliberately left off.** I did not put a made-up ABN on the site. ABNs are
+publicly checkable on ABN Lookup, so a fake one on a real trading business is a
+misrepresentation rather than filler. Having no ABN on the page is fine; having a wrong
+one is not. Add Manu's real ABN to the footer and the About page when you have it — and
+you'll need it anyway to register a `.com.au` domain.
+
+**No reviews.** Deliberately absent rather than invented. Fake testimonials breach the
+Australian Consumer Law and the ACCC pursues them. Add a section once there are real
+Google reviews.
+
+**Still outstanding:**
+
+| What | Where | Notes |
 |---|---|---|
-| **ABN** | footer, about page | Manu's ABN |
-| **Opening hours** | `contact.html` | Four bracketed times — must match the centre's trading hours |
-| **Formspree ID** | `contact.html` | See "Contact form" below |
-| **Google Maps embed** | `contact.html` | Maps → Share → Embed a map → paste the iframe |
+| ABN | footer, `about.html` | See above |
+| Confirm trading hours | `contact.html` + homepage JSON-LD | See above |
+| Confirm WhatsApp number | `fabs()` block | Link is `wa.me/61470282957`, built from the card's mobile — confirm it's on WhatsApp |
+| Domain | canonical URLs, `sitemap.xml` | Currently `https://mmrepairmaster.com.au` — **confirm it's registered**; find-and-replace if different |
+| Form backend | `contact.html` | Works right now via mailto fallback — see below |
+| Photos | — | No photographs anywhere; see below |
 
-### WhatsApp button — confirm this
+### The contact form already works
 
-Every page carries floating **Call**, **WhatsApp** and **Instagram** buttons, bottom
-right. The WhatsApp link is `https://wa.me/61470282957` — built from the mobile number
-on the business card, **on the assumption that number is on WhatsApp**. Confirm with
-Manu. If it isn't, either point it at the right number or remove the button from the
-`fabs()` block. The Instagram button is a third extra — drop it if you only want the two.
+The form posts to `[YOUR-FORM-ID]`, which is not a real endpoint. Rather than leaving it
+broken, `assets/site.js` detects the unconfigured endpoint and falls back to opening the
+visitor's mail client with the enquiry pre-filled to mmrepairmaster@gmail.com. So the
+form works from day one.
 
-Two more that aren't bracketed but still need attention:
+To collect submissions properly instead: sign up at [Formspree](https://formspree.io),
+create a form, and replace `[YOUR-FORM-ID]` in `contact.html` with its ID. The fallback
+switches itself off automatically once a real endpoint is in place.
 
-- **Domain.** Canonical URLs and `sitemap.xml` currently use `https://mmrepairmaster.com.au`.
-  **Confirm this domain is actually registered.** If it's different, find-and-replace it
-  across all files. A `.com.au` needs an ABN — auDA requires Australian presence.
-- **Logo.** The header uses a CSS wordmark because the supplied logo is a JPEG mockup
-  on a grey background, which won't sit cleanly on a dark header. Get a **transparent
-  PNG or SVG** and swap it in. Also add `assets/og-image.png` (1200×630) for social
-  sharing and reference it in an `og:image` meta tag.
-- **Opening hours also appear in the structured data** (`openingHoursSpecification` in
-  the homepage JSON-LD). Update both places.
+### The map works
+
+`contact.html` embeds a Google Map pointed at The Spring Shopping Centre, Beechboro. It
+needs no API key. It will look blank in a local preview with no internet, but loads
+normally for real visitors.
+
+### Logo
+
+`assets/logo.png`, `assets/icon.png`, `assets/favicon-32.png` and `assets/og-image.png`
+were all cut from the logo mockup supplied by the client. The mockup was a JPEG on a
+grey background, so the background was keyed out to make it transparent. It is clean at
+the sizes used here, but **if Manu has the original vector or transparent PNG, use that
+instead** — it will be sharper on large screens.
+
+The logo appears as the emblem in the header, the full logo in the footer, the browser
+favicon, and the social share image.
+
+### Photos
+
+The site ships with no photographs at all — only the logo and CSS/SVG graphics. Real
+photos of the kiosk, repairs in progress and finished CCTV installs would lift it
+considerably. Don't pull images from Google Images or from the reference site the client
+supplied; use Manu's own, or properly licensed stock.
 
 ## ⚖️ Legal checklist — Western Australia
 
