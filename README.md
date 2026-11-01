@@ -123,6 +123,83 @@ photos of the kiosk, repairs in progress and finished CCTV installs would lift i
 considerably. Don't pull images from Google Images or from the reference site the client
 supplied; use Manu's own, or properly licensed stock.
 
+## 📷 Copyright &mdash; what's on this site and where it came from
+
+Not legal advice. But this is the asset register, so the provenance of everything is
+traceable if it's ever questioned.
+
+| Asset | Source | Licence position |
+|---|---|---|
+| All page copy | Written for this site | Original work. Nothing copied. |
+| `assets/img/*.svg` (7 service illustrations) | Drawn for this site | Original work. No third-party rights. |
+| `assets/logo.png`, `icon.png`, `favicon-32.png` | Cut from the logo mockup the client supplied | Manu's logo &mdash; see the caveat below |
+| `assets/og-image.png` | Composed from that logo | As above |
+| Inter, Barlow (fonts) | Google Fonts | SIL Open Font License &mdash; commercial use and embedding permitted |
+| Google Map on `contact.html` | Standard Google Maps embed | Permitted under the Google Maps terms when used as a standard embed |
+| **Photographs** | **None on the site** | Nothing to clear |
+
+### Why there are no photos
+
+Stock photo sources were unreachable from the build environment, so rather than guess at
+image URLs, the service cards use illustrations drawn specifically for this site. That
+sidesteps the licensing question entirely.
+
+### If you add photos later
+
+Under the **Copyright Act 1968 (Cth)** copyright is automatic the moment an image is
+created &mdash; there's no registration step in Australia, and no copyright notice is
+needed for protection to exist. So an image having no watermark, no credit and no
+copyright symbol tells you nothing about whether you can use it.
+
+**Australia does not have "fair use."** That's a United States doctrine. Australia has
+narrower **fair dealing** exceptions &mdash; research or study, criticism or review,
+parody or satire, reporting news, and professional legal advice. Decorating a commercial
+website fits none of them. Remedies for infringement include injunctions and damages or
+an account of profits, with additional damages available where the infringement was
+flagrant.
+
+So every image must be one of:
+
+1. **Taken by or for Manu** &mdash; best option. Real photos of the kiosk, the bench and
+   finished CCTV installs will outperform stock for a local business anyway, because
+   customers recognise the place.
+2. **Properly licensed stock.** Unsplash and Pexels both allow free commercial use
+   without attribution. **Save the licence terms and download date for each image** in a
+   folder alongside the repo &mdash; if it's ever queried, that record is what you need.
+3. **Paid stock** (Adobe Stock, Shutterstock, iStock) under the licence you bought.
+
+Three traps worth knowing:
+
+- **Identifiable people.** Most stock licences require a model release for commercial
+  use. Separately, using a stock photo of a "technician" in a way that implies they're
+  Manu's staff can be misleading conduct under the Australian Consumer Law, even where
+  the image licence is fine.
+- **Google Images is not a source.** It's a search index. Images found there are owned
+  by somebody.
+- **Photographing the centre.** The Spring Shopping Centre's management may restrict
+  commercial photography on the premises. Ask before a shoot.
+
+### The logo &mdash; confirm ownership
+
+The logo was supplied by the client, and the site uses it on that basis. Worth
+confirming with Manu that **he owns it**: if a designer created it, copyright usually
+stays with the designer unless there's a written assignment. If it came from an AI
+generator, check that tool's terms for commercial use.
+
+Also note **moral rights** (Part IX of the Copyright Act) &mdash; a creator's right to
+attribution and to the integrity of their work stays with them even after copyright is
+assigned, and can't be transferred, only consented to.
+
+### The reference site
+
+The client supplied an existing IT company's website as a layout reference. It was used
+for **structure and service mix only**. None of its wording, images or code appear here,
+and the generated output was scanned to confirm no trace of that business remains.
+
+Copyright protects the *expression* of an idea, not the idea itself &mdash; so a general
+layout approach isn't protected, but the specific text, photographs and code on another
+site are. Keep it that way if you edit this later.
+
 ## ⚖️ Legal checklist — Western Australia
 
 Not legal advice. Have Manu confirm what applies.
@@ -150,10 +227,6 @@ turnover are generally exempt from the *Privacy Act 1988*, but a short privacy p
 good practice and some form providers require one. Worth adding `privacy.html` and
 linking it from the footer. The Privacy Act has been under reform — check current
 obligations.
-
-**Images must be licensed.** The site ships with no photographs, only CSS and SVG.
-Don't pull photos from Google Images. Use Manu's own photos of the kiosk and his work,
-or properly licensed stock.
 
 **Fonts.** Inter and Barlow, loaded from Google Fonts — open-source, fine commercially.
 

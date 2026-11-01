@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1424"/><stop offset="0.55" stop-color="#102033"/>
+      <stop offset="1" stop-color="#071019"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.72" cy="0.18" r="0.75">
+      <stop offset="0" stop-color="#1f6fd0" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#1f6fd0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.12" cy="0.92" r="0.6">
+      <stop offset="0" stop-color="#ef6a16" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#ef6a16" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8fc7ff"/><stop offset="1" stop-color="#3f8ee0"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1b3350" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <rect width="800" height="450" fill="url(#grid)" opacity="0.35"/>
+  <rect width="800" height="450" fill="url(#glow)"/>
+  <rect width="800" height="450" fill="url(#glow2)"/>
+  <g stroke="#2f6fb5" stroke-width="2" fill="none" opacity="0.5" stroke-linecap="round">
+    <path d="M0 96 H110 l26 26 H232"/><circle cx="238" cy="122" r="5" fill="#2f6fb5" stroke="none"/>
+    <path d="M800 330 H690 l-26-26 H560"/><circle cx="554" cy="304" r="5" fill="#2f6fb5" stroke="none"/>
+    <path d="M60 390 h90 l22-22"/><circle cx="178" cy="362" r="4.5" fill="#ef6a16" stroke="none"/>
+    <path d="M740 110 h-70 l-20 20"/><circle cx="644" cy="136" r="4.5" fill="#ef6a16" stroke="none"/>
+  </g>
+  <g transform="translate(400 225)" fill="none" stroke="url(#stroke)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-152 -56 h304 l-26 190 a18 18 0 0 1-18 16 h-216 a18 18 0 0 1-18-16z"/>
+    <path d="M-66 -56 v-34 a66 66 0 0 1 132 0 v34"/>
+    <rect x="-96" y="6" width="70" height="106" rx="12" stroke-width="6"/>
+    <path d="M6 16 h108 v74 h-108z" stroke-width="6"/>
+    <path d="M-10 102 h140" stroke="#ef6a16" stroke-width="6"/>
+  </g>
+
+</svg>

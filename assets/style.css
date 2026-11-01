@@ -496,3 +496,29 @@ img.logo__mark {
   border-radius: var(--radius);
   display: block;
 }
+
+
+/* ---------- illustrated card banners ---------- */
+.card__media {
+  display: block;
+  width: calc(100% + 2.8rem);
+  margin: -1.4rem -1.4rem 1.15rem;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--navy);
+}
+.card--link:hover .card__media { filter: saturate(1.15) brightness(1.07); }
+.card__media, .card--link:hover .card__media { transition: filter .2s ease; }
+
+/* service-page hero illustration */
+.hero--service > .wrap { display: grid; gap: 1.75rem; align-items: center; }
+@media (min-width: 900px) {
+  .hero--service > .wrap { grid-template-columns: 1.25fr .85fr; gap: 2.5rem; }
+}
+.hero__art {
+  width: 100%; border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.14);
+  display: block;
+}
+@media (max-width: 899px) { .hero__art { display: none; } }
