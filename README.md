@@ -123,6 +123,39 @@ photos of the kiosk, repairs in progress and finished CCTV installs would lift i
 considerably. Don't pull images from Google Images or from the reference site the client
 supplied; use Manu's own, or properly licensed stock.
 
+## 🖼 Adding photographs
+
+The site has **no photographs** — the service cards use illustrations drawn for this
+project. Stock photo sources were unreachable from the build environment, so rather than
+guess at image URLs that might not resolve, the site was built to take photos the moment
+they exist.
+
+**Drop a JPEG into `assets/photos/` with the right filename and it appears.** No HTML or
+CSS changes. A missing photo is not an error — the illustration just stays, so you can
+add them one at a time.
+
+| File to add | Replaces the illustration on |
+|---|---|
+| `assets/photos/phone-repair.jpg` | Phone Repair |
+| `assets/photos/computer-laptop-repair.jpg` | Laptop & Computer Repair |
+| `assets/photos/data-recovery.jpg` | Data Recovery |
+| `assets/photos/virus-malware-removal.jpg` | Virus & Malware Removal |
+| `assets/photos/device-sales.jpg` | Device Sales |
+| `assets/photos/gaming-pc-setup.jpg` | Gaming PC Builds & Setup |
+| `assets/photos/cctv-installation.jpg` | CCTV Installation & Service |
+
+**1600×900, JPEG, under ~200 KB each.** Full specs, search terms and the licensing
+cautions are in `assets/photos/README.md`.
+
+Each illustration carries a `data-photo` attribute; `assets/site.js` tests whether that
+photo loads and swaps it in only on success. That is why nothing ever renders broken.
+
+**Manu's own photos are worth more than stock here.** A real shot of Kiosk 3, the bench,
+a phone mid-repair — customers recognise the place, and it proves the business exists. A
+phone camera in decent light is enough. Prefer hands, tools and devices over faces:
+stock photos of people carry model-release requirements, and implying a stock model
+works at the kiosk can be misleading conduct under the Australian Consumer Law.
+
 ## 🎨 Colour
 
 The palette comes from Manu's own logo rather than a generic "high-converting" scheme,

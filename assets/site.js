@@ -67,6 +67,24 @@
     });
   }
 
+  /* ---- photo upgrade ----
+     Every illustration carries a data-photo path. If a real photograph is
+     present at that path it is swapped in; if the file isn't there the
+     illustration simply stays. Nothing ever renders broken, so photos can
+     be added one at a time without touching any HTML. */
+  document.querySelectorAll("img[data-photo]").forEach(function (img) {
+    var src = img.getAttribute("data-photo");
+    if (!src) return;
+    var probe = new Image();
+    probe.onload = function () {
+      if (probe.naturalWidth > 1) {
+        img.src = src;
+        img.classList.add("has-photo");
+      }
+    };
+    probe.src = src;
+  });
+
   /* ---- scroll reveal ---- */
   var targets = document.querySelectorAll(".reveal");
   if (!targets.length) return;

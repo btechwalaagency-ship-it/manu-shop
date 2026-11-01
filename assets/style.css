@@ -524,3 +524,8 @@ img.logo__mark {
   display: block;
 }
 @media (max-width: 899px) { .hero__art { display: none; } }
+
+
+/* A real photograph in a slot that defaults to an illustration. */
+.card__media.has-photo { object-fit: cover; }
+.hero__art.has-photo  { object-fit: cover; aspect-ratio: 16 / 9; }
