@@ -53,19 +53,17 @@ Everything from the business card is on the site: name, tagline, the
 `SALES · REPAIR · DATA RECOVERY` line, phone, email, Instagram handle, the kiosk
 address, and all the services from the card's "What We Offer" panel.
 
-**Trading hours** are set to the standard Perth metro retail pattern:
+**Trading hours** are confirmed by the client:
 
 | | |
 |---|---|
-| Mon–Wed, Fri | 9:00am – 5:30pm |
-| Thursday | 9:00am – 9:00pm (late night) |
+| Monday – Friday | 9:00am – 6:00pm |
 | Saturday | 9:00am – 5:00pm |
 | Sunday | 11:00am – 5:00pm |
 
-These are **an assumption based on typical centre trading, not confirmed with Manu.**
-Check them against The Spring Shopping Centre's actual hours. They appear in two
-places — the table in `contact.html` and the `openingHoursSpecification` block in the
-homepage JSON-LD. Update both.
+They live in two places and must be changed in both: the table in `contact.html` and
+the `openingHoursSpecification` block in the JSON-LD on `index.html`, `about.html` and
+`contact.html`.
 
 **ABN — deliberately left off.** I did not put a made-up ABN on the site. ABNs are
 publicly checkable on ABN Lookup, so a fake one on a real trading business is a
@@ -82,7 +80,6 @@ Google reviews.
 | What | Where | Notes |
 |---|---|---|
 | ABN | footer, `about.html` | See above |
-| Confirm trading hours | `contact.html` + homepage JSON-LD | See above |
 | Confirm WhatsApp number | `fabs()` block | Link is `wa.me/61470282957`, built from the card's mobile — confirm it's on WhatsApp |
 | Custom domain | canonical URLs, `sitemap.xml`, `robots.txt` | Site currently lives at the GitHub Pages URL. See "Moving to a custom domain" below when a domain is registered |
 | Form backend | `contact.html` | Works right now via mailto fallback — see below |
