@@ -4,8 +4,9 @@ Drop photos in here and the site picks them up automatically. No HTML changes.
 
 ## Currently in place
 
-Five of the seven services have a photo. The other two still show their illustration,
-which is the fallback working as designed — add the file and it swaps itself in.
+Six of the seven services have a photo. Laptop & Computer Repair still shows its
+illustration, which is the fallback working as designed — add the file and it swaps
+itself in.
 
 | Service | Photo |
 |---|---|
@@ -14,11 +15,13 @@ which is the fallback working as designed — add the file and it swaps itself i
 | Device Sales | ✅ `device-sales.jpg` |
 | Virus & Malware Removal | ✅ `virus-malware-removal.jpg` |
 | Data Recovery | ✅ `data-recovery.jpg` |
-| **Phone Repair** | ❌ still illustrated — **needed** |
+| Phone Repair | ✅ `phone-repair.jpg` |
 | **Laptop & Computer Repair** | ❌ still illustrated — **needed** |
 
-The five in place were supplied by the client, cropped from 2000×1116 to 1888×1062 to
-remove an AI-generator watermark in the bottom-right corner, then resized to 1600×900.
+The six in place were supplied by the client and cropped from 2000×1116 to remove an
+AI-generator watermark in the bottom-right corner, then resized to 1600×900. The crop
+width varies because the watermark sits at a different x on different images — check
+the corner of any new photo before adding it.
 They are generated images of a generic repair shop, not photographs of Kiosk 3 — see
 the caution at the end of this file.
 
