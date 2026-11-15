@@ -81,7 +81,6 @@ Google reviews.
 |---|---|---|
 | ABN | footer, `about.html` | See above |
 | Confirm WhatsApp number | `fabs()` block | Link is `wa.me/61470282957`, built from the card's mobile — confirm it's on WhatsApp |
-| Custom domain | canonical URLs, `sitemap.xml`, `robots.txt` | Site currently lives at the GitHub Pages URL. See "Moving to a custom domain" below when a domain is registered |
 | Form backend | `contact.html` | Works right now via mailto fallback — see below |
 | Photos | — | No photographs anywhere; see below |
 
@@ -327,46 +326,29 @@ python3 -m http.server 8000
 
 ## Published
 
-The site is live on **GitHub Pages**, served from the `main` branch root:
+**Live at https://www.mmrepairmaster.com.au/** — hosted on Hostinger (`server: hcdn`),
+not GitHub Pages.
 
-```
-https://btechwalaagency-ship-it.github.io/manu-shop/
-```
+That means **pushing to this repo does not update the live site.** The repo is the
+source of truth; deploying is a manual upload of the site files to the host.
 
-`.nojekyll` tells Pages to serve the files verbatim rather than running them through
-Jekyll. All paths in the HTML are relative, so the site works correctly from the
-`/manu-shop/` subdirectory Pages serves it at — verified across all 12 pages, their
-assets and every internal link.
+### To deploy
 
-Pushing to `main` redeploys. It usually takes under a minute.
+Upload everything except `README.md`, `.git/` and `assets/photos/README.md` to the
+host's public directory, keeping the folder structure (`assets/`, `assets/img/`,
+`assets/photos/`, `services/`). Hostinger's File Manager takes a zip and extracts it in
+place, which is faster than uploading files one by one.
 
-### Moving to a custom domain
+### www and the apex both answer
 
-Canonical URLs, `og:url`, `og:image`, `sitemap.xml`, `robots.txt` and the JSON-LD all
-currently point at the GitHub Pages address, so search engines index that as the real
-site. When a domain is registered, all of that must move with it or the new domain will
-keep pointing search engines back at github.io.
+`www.mmrepairmaster.com.au` and `mmrepairmaster.com.au` currently both return 200 with
+identical content and no redirect between them. Search engines see that as the same page
+on two addresses. The canonical tags all point at the `www` form, which tells Google
+which to index, but a **301 redirect from the apex to `www`** is the proper fix and is
+worth setting up in the host's control panel.
 
-1. Swap the base URL everywhere:
-
-   ```bash
-   grep -rl 'btechwalaagency-ship-it.github.io/manu-shop/' --include='*.html' --include='*.xml' --include='*.txt' . \
-     | xargs sed -i 's|https://btechwalaagency-ship-it.github.io/manu-shop/|https://YOURDOMAIN.com.au/|g'
-   ```
-
-2. Add a `CNAME` file at the repo root containing just the domain, no protocol:
-
-   ```
-   mmrepairmaster.com.au
-   ```
-
-3. In **Settings → Pages**, set the Custom domain, then point DNS at GitHub Pages —
-   four `A` records for the apex, or a `CNAME` on `www`.
-
-4. Tick **Enforce HTTPS** once the certificate has provisioned (can take a few hours).
-
-A `.com.au` requires Australian presence — an ABN, ACN or registered business name —
-under auDA rules. It has never required Australian hosting.
+`http://` does not currently redirect to `https://` either — worth enabling, since the
+host supports it.
 
 ## SEO in place
 
