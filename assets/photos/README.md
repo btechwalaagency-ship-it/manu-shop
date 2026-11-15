@@ -4,9 +4,9 @@ Drop photos in here and the site picks them up automatically. No HTML changes.
 
 ## Currently in place
 
-Six of the seven services have a photo. Laptop & Computer Repair still shows its
-illustration, which is the fallback working as designed — add the file and it swaps
-itself in.
+All seven services now have a photo. The illustrations in `assets/img/` remain as the
+fallback — if a photo is ever removed, its illustration reappears rather than the card
+breaking.
 
 | Service | Photo |
 |---|---|
@@ -16,9 +16,9 @@ itself in.
 | Virus & Malware Removal | ✅ `virus-malware-removal.jpg` |
 | Data Recovery | ✅ `data-recovery.jpg` |
 | Phone Repair | ✅ `phone-repair.jpg` |
-| **Laptop & Computer Repair** | ❌ still illustrated — **needed** |
+| Laptop & Computer Repair | ✅ `computer-laptop-repair.jpg` |
 
-The six in place were supplied by the client and cropped from 2000×1116 to remove an
+All seven were supplied by the client and cropped from 2000×1116 to remove an
 AI-generator watermark in the bottom-right corner, then resized to 1600×900. The crop
 width varies because the watermark sits at a different x on different images — check
 the corner of any new photo before adding it.
