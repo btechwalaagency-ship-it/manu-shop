@@ -2,6 +2,26 @@
 
 Drop photos in here and the site picks them up automatically. No HTML changes.
 
+## Currently in place
+
+Five of the seven services have a photo. The other two still show their illustration,
+which is the fallback working as designed — add the file and it swaps itself in.
+
+| Service | Photo |
+|---|---|
+| CCTV Installation | ✅ `cctv-installation.jpg` |
+| Gaming PC Builds | ✅ `gaming-pc-setup.jpg` |
+| Device Sales | ✅ `device-sales.jpg` |
+| Virus & Malware Removal | ✅ `virus-malware-removal.jpg` |
+| Data Recovery | ✅ `data-recovery.jpg` |
+| **Phone Repair** | ❌ still illustrated — **needed** |
+| **Laptop & Computer Repair** | ❌ still illustrated — **needed** |
+
+The five in place were supplied by the client, cropped from 2000×1116 to 1888×1062 to
+remove an AI-generator watermark in the bottom-right corner, then resized to 1600×900.
+They are generated images of a generic repair shop, not photographs of Kiosk 3 — see
+the caution at the end of this file.
+
 ## Filenames — these exact names
 
 | File | Where it appears |
