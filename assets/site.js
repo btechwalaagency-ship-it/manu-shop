@@ -218,6 +218,109 @@
     })();
   }
 
+
+  /* =======================================================
+     Opening hours: live open/closed status.
+     Computed in Perth time, never the visitor's. Someone
+     checking from Sydney is three hours ahead; showing them
+     their own clock would say "open" at 8am when the kiosk
+     is still shut.
+     ======================================================= */
+  (function () {
+    // 0 = Sunday .. 6 = Saturday. Minutes from midnight.
+    var WEEK = [
+      { open: 11 * 60, close: 17 * 60 },  // Sun
+      { open:  9 * 60, close: 18 * 60 },  // Mon
+      { open:  9 * 60, close: 18 * 60 },
+      { open:  9 * 60, close: 18 * 60 },
+      { open:  9 * 60, close: 18 * 60 },
+      { open:  9 * 60, close: 18 * 60 },  // Fri
+      { open:  9 * 60, close: 17 * 60 }   // Sat
+    ];
+    var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var SHORT = { Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6 };
+
+    function perthNow() {
+      try {
+        var parts = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Australia/Perth", weekday: "short",
+          hour: "2-digit", minute: "2-digit", hour12: false
+        }).formatToParts(new Date());
+        var o = {};
+        parts.forEach(function (p) { o[p.type] = p.value; });
+        var d = SHORT[o.weekday];
+        if (d === undefined) return null;
+        var h = parseInt(o.hour, 10);
+        if (h === 24) h = 0;                       // some engines report 24
+        return { day: d, mins: h * 60 + parseInt(o.minute, 10) };
+      } catch (e) {
+        return null;    // no reliable Perth clock: show nothing rather than a guess
+      }
+    }
+
+    function fmt(m) {
+      var h = Math.floor(m / 60), mm = m % 60;
+      var ap = h >= 12 ? "pm" : "am";
+      var hh = h % 12; if (hh === 0) hh = 12;
+      return hh + ":" + (mm < 10 ? "0" : "") + mm + ap;
+    }
+
+    var now = perthNow();
+    var badges = document.querySelectorAll("[data-hours-status]");
+    if (!now) { badges.forEach(function (b) { b.style.display = "none"; }); return; }
+
+    var today = WEEK[now.day];
+    var state, main, sub;
+
+    if (now.mins < today.open) {
+      state = "is-shut"; main = "Closed"; sub = "opens " + fmt(today.open) + " today";
+    } else if (now.mins < today.close) {
+      state = "is-open"; main = "Open now"; sub = "until " + fmt(today.close);
+    } else {
+      var i = 1, nd;
+      while (i <= 7) { nd = (now.day + i) % 7; if (WEEK[nd]) break; i++; }
+      var when = i === 1 ? "tomorrow" : DAYS[nd];
+      state = "is-shut"; main = "Closed"; sub = "opens " + fmt(WEEK[nd].open) + " " + when;
+    }
+
+    badges.forEach(function (b) {
+      b.className = "hours-status " + b.className.replace(/hours-status\S*/g, "").trim() +
+                    (b.hasAttribute("data-lg") ? "" : "");
+      b.classList.add("hours-status", state);
+      if (b.getAttribute("data-hours-status") === "lg") b.classList.add("hours-status--lg");
+      b.innerHTML = '<span class="hours-status__dot"></span>' +
+                    '<span>' + main + '</span>' +
+                    '<span class="hours-status__sub">' + sub + '</span>';
+      b.setAttribute("role", "status");
+      requestAnimationFrame(function () { b.classList.add("is-ready"); });
+    });
+
+    /* highlight today in the compact footer list */
+    document.querySelectorAll(".hours-mini").forEach(function (ul) {
+      var rows = ul.children;
+      var idx = now.day === 0 ? 2 : (now.day === 6 ? 1 : 0);
+      if (rows[idx]) rows[idx].classList.add("is-today");
+    });
+
+    /* highlight today on the full table, and reveal its rows on scroll */
+    var table = document.querySelector(".hours");
+    if (table) {
+      var trs = table.querySelectorAll("tbody tr");
+      var idx2 = now.day === 0 ? 2 : (now.day === 6 ? 1 : 0);
+      if (trs[idx2]) trs[idx2].classList.add("is-today");
+      if (!reduced && "IntersectionObserver" in window) {
+        var io2 = new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting) { table.classList.add("is-in"); io2.disconnect(); }
+          });
+        }, { threshold: 0.15 });
+        io2.observe(table);
+      } else {
+        table.classList.add("is-in");
+      }
+    }
+  })();
+
   /* ---- back to top ---- */
   (function () {
     var btn = document.createElement("button");

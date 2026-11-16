@@ -173,6 +173,16 @@ img.logo__mark {
   font-size: .62rem; letter-spacing: .17em; text-transform: uppercase;
   color: var(--muted); margin-top: 2px;
 }
+.logo__text small {
+  display: block; margin-top: 3px;
+  font-size: .605rem; font-weight: 600; letter-spacing: .035em;
+  color: var(--muted); white-space: nowrap;
+}
+/* too tight for it on small screens - the address is in the hero and footer anyway */
+@media (max-width: 719px) { .logo__text small { display: none; } }
+/* the shrinking header drops it too, so the bar can actually shrink */
+.site-header.is-stuck .logo__text small { display: none; }
+
 .site-footer .logo__text strong { color: #fff; }
 .site-footer .logo__text em { color: var(--accent); }
 .nav { display: none; }
@@ -871,4 +881,132 @@ img.logo__mark {
   /* big hero scale-in on top of the existing fade */
   @keyframes heroZoom { from { transform: scale(1.06); } to { transform: scale(1); } }
   .hero { animation: heroZoom 1.4s cubic-bezier(.22,.8,.3,1) backwards .1s; }
+}
+
+
+/* =========================================================
+   Opening hours - live status and compact list
+   ========================================================= */
+.hours-mini { list-style: none; margin: .4rem 0 0; padding: 0; display: grid; gap: .4rem; font-size: .9rem; }
+.hours-mini li { display: flex; justify-content: space-between; gap: 1rem; }
+.hours-mini li span:first-child { color: var(--on-navy); font-weight: 600; }
+.hours-mini li.is-today { color: var(--accent); }
+.hours-mini li.is-today span:first-child { color: var(--accent); }
+
+.hours-status {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: var(--font-head); font-weight: 700; font-size: .86rem;
+  padding: .35rem .7rem; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.07);
+  color: var(--on-navy);
+}
+.hours-status--lg {
+  font-size: .97rem; padding: .5rem .9rem; margin-bottom: .85rem;
+  border-color: var(--border); background: var(--surface); color: var(--ink);
+}
+.hours-status__dot {
+  width: 9px; height: 9px; border-radius: 50%; flex: none;
+  background: #9aa7b4; position: relative;
+}
+.hours-status.is-open  .hours-status__dot { background: #22c55e; }
+.hours-status.is-shut  .hours-status__dot { background: #ef4444; }
+.hours-status__sub { font-weight: 600; opacity: .75; }
+
+/* today's row on the full table */
+.hours tbody tr.is-today th, .hours tbody tr.is-today td { color: var(--accent-text); font-weight: 700; }
+.hours tbody tr.is-today { background: var(--accent-soft); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* the live dot breathes while open */
+  @keyframes dotPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
+    70%  { box-shadow: 0 0 0 7px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  }
+  .hours-status.is-open .hours-status__dot { animation: dotPulse 2.2s ease-out infinite; }
+
+  /* the badge fades in once the status has been worked out */
+  .hours-status { opacity: 0; transform: translateY(5px);
+                  transition: opacity .45s ease, transform .45s cubic-bezier(.22,.8,.3,1); }
+  .hours-status.is-ready { opacity: 1; transform: none; }
+
+  /* table rows arrive in sequence */
+  .hours tbody tr { opacity: 0; transform: translateX(-10px);
+                    transition: opacity .45s ease, transform .45s cubic-bezier(.22,.8,.3,1); }
+  .hours.is-in tbody tr { opacity: 1; transform: none; }
+  .hours.is-in tbody tr:nth-child(1) { transition-delay: .05s; }
+  .hours.is-in tbody tr:nth-child(2) { transition-delay: .13s; }
+  .hours.is-in tbody tr:nth-child(3) { transition-delay: .21s; }
+}
+/* with motion reduced, or no script, the table is simply visible */
+@media (prefers-reduced-motion: reduce) { .hours tbody tr { opacity: 1; transform: none; } }
+html:not(.js) .hours tbody tr { opacity: 1; transform: none; }
+html:not(.js) .hours-status { opacity: 1; transform: none; }
+
+
+/* =========================================================
+   Online booking offer
+   ========================================================= */
+.promo-pill {
+  display: inline-flex; align-items: center; gap: .6rem;
+  margin-bottom: 1.1rem; padding: .4rem .5rem .4rem .4rem;
+  border-radius: 999px; text-decoration: none;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  color: var(--on-navy);
+  font-family: var(--font-head); font-weight: 600; font-size: .92rem;
+  position: relative; overflow: hidden;
+}
+.promo-pill__flash {
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 700; font-size: .8rem; letter-spacing: .04em;
+  padding: .25rem .55rem; border-radius: 999px; flex: none;
+}
+.promo-pill svg { flex: none; opacity: .7; }
+/* on light sections (services hub) */
+.section .promo-pill {
+  background: var(--accent-soft); border-color: rgba(0,0,0,.08); color: var(--ink);
+}
+
+.promo-card {
+  display: flex; gap: .9rem; align-items: flex-start;
+  padding: 1rem 1.1rem; margin-bottom: 1.4rem;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  position: relative; overflow: hidden;
+}
+.promo-card__tag {
+  background: var(--accent); color: var(--accent-ink);
+  font-family: var(--font-head); font-weight: 700; font-size: .82rem;
+  padding: .3rem .6rem; border-radius: 999px; flex: none; white-space: nowrap;
+}
+.promo-card strong { font-family: var(--font-head); font-size: 1.05rem; display: block; margin-bottom: .2rem; }
+.promo-card p { margin: 0; font-size: .93rem; color: var(--ink-2); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* the pill lifts and its badge pulses */
+  .promo-pill { transition: transform .22s cubic-bezier(.22,.8,.3,1), border-color .22s ease; }
+  .promo-pill:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .promo-pill:hover svg { transform: translateX(3px); }
+  .promo-pill svg { transition: transform .22s cubic-bezier(.22,.8,.3,1); }
+
+  @keyframes flashPulse {
+    0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+    60%     { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent); }
+  }
+  .promo-pill__flash, .promo-card__tag { animation: flashPulse 2.6s ease-out infinite; }
+
+  /* light sweeps across both, slowly */
+  @keyframes promoSheen { from { transform: translateX(-130%); } to { transform: translateX(130%); } }
+  .promo-pill::after, .promo-card::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(105deg, transparent 38%,
+                rgba(255,255,255,.35) 50%, transparent 62%);
+    animation: promoSheen 4.5s ease-in-out 1.6s infinite;
+  }
+
+  /* the pill arrives with the rest of the hero */
+  .hero .promo-pill { animation: heroIn .72s cubic-bezier(.22,.8,.3,1) backwards .02s; }
 }
