@@ -796,3 +796,79 @@ img.logo__mark {
   }
   .section h2.reveal.is-in::after { transform: scaleX(1); }
 }
+
+
+/* =========================================================
+   Motion, part four - the big stuff
+   Every element here is created by script, so with JavaScript
+   off none of it exists and the page is simply static.
+   ========================================================= */
+
+/* ---- intro curtain ---- */
+.curtain {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--navy);
+  display: grid; place-items: center;
+}
+.curtain img { width: 132px; height: auto; }
+.curtain.is-gone { pointer-events: none; }
+
+/* ---- page transition wipe ---- */
+.wipe {
+  position: fixed; inset: 0; z-index: 190;
+  background: var(--navy); transform: scaleY(0); transform-origin: bottom center;
+  pointer-events: none;
+}
+
+/* ---- services marquee ---- */
+.marquee {
+  overflow: hidden; background: var(--navy); color: var(--on-navy);
+  border-block: 1px solid rgba(255,255,255,.1);
+  padding: .85rem 0;
+}
+.marquee__row { display: flex; width: max-content; }
+.marquee__row span {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: clamp(.95rem, 2.2vw, 1.15rem);
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 0 1.6rem; white-space: nowrap; color: var(--on-navy);
+}
+.marquee__row span i { font-style: normal; color: var(--accent); margin-left: 1.6rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* curtain lifts, logo pops first */
+  @keyframes curtainLogo {
+    0%   { opacity: 0; transform: scale(.8) rotate(-8deg); }
+    55%  { opacity: 1; transform: scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: scale(1.1); }
+  }
+  @keyframes curtainUp {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-100%); }
+  }
+  .curtain img { animation: curtainLogo 1.05s cubic-bezier(.22,.8,.3,1) forwards; }
+  .curtain.is-gone { animation: curtainUp .66s cubic-bezier(.76,0,.24,1) forwards; }
+
+  /* page wipe */
+  .wipe.is-out { transform: scaleY(1); transition: transform .42s cubic-bezier(.76,0,.24,1); }
+
+  /* marquee scrolls forever */
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee__row { animation: marquee 26s linear infinite; }
+  .marquee:hover .marquee__row { animation-play-state: paused; }
+
+  /* 3D tilt on service cards, pointer devices only */
+  @media (hover: hover) and (pointer: fine) {
+    .card--link { transform-style: preserve-3d; will-change: transform; }
+    .card--link.tilt { transition: transform .12s linear, box-shadow .22s ease, border-color .22s ease; }
+    .card--link.tilt-off { transition: transform .5s cubic-bezier(.22,.8,.3,1); }
+  }
+
+  /* photos drift inside their frame as the card scrolls past */
+  .card__media { will-change: transform; }
+
+  /* big hero scale-in on top of the existing fade */
+  @keyframes heroZoom { from { transform: scale(1.06); } to { transform: scale(1); } }
+  .hero { animation: heroZoom 1.4s cubic-bezier(.22,.8,.3,1) backwards .1s; }
+}

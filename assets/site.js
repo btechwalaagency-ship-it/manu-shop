@@ -80,6 +80,144 @@
     }
   }
 
+
+  /* =======================================================
+     Big motion. Every piece is created here, so with scripting
+     off none of it exists and the page is plain and usable.
+     ======================================================= */
+  if (!reduced) {
+
+    /* ---- intro curtain ------------------------------------
+       Hard rule: the curtain must never be able to trap the page.
+       It is removed on load, and unconditionally after 2.2s even
+       if an image never resolves or something throws.           */
+    (function () {
+      try {
+        if (sessionStorage.getItem("seenIntro")) return;
+        sessionStorage.setItem("seenIntro", "1");
+      } catch (e) { /* private mode - just show it */ }
+
+      var base = document.querySelector('link[rel="apple-touch-icon"]');
+      var logo = base ? base.getAttribute("href") : "assets/icon.png";
+      var c = document.createElement("div");
+      c.className = "curtain";
+      c.setAttribute("aria-hidden", "true");
+      c.innerHTML = '<img src="' + logo + '" alt="">';
+      document.body.appendChild(c);
+
+      var lift = function () {
+        if (!c.parentNode || c.classList.contains("is-gone")) return;
+        c.classList.add("is-gone");
+        setTimeout(function () { if (c.parentNode) c.parentNode.removeChild(c); }, 700);
+      };
+      window.addEventListener("load", function () { setTimeout(lift, 950); });
+      setTimeout(lift, 2200);          // hard stop, whatever happens
+    })();
+
+    /* ---- page transition wipe ----
+       Only for plain left-clicks on same-origin page links. Anything
+       unusual falls through to normal navigation, and a timeout
+       navigates anyway if the transition never finishes.          */
+    (function () {
+      var w = document.createElement("div");
+      w.className = "wipe";
+      w.setAttribute("aria-hidden", "true");
+      document.body.appendChild(w);
+
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest ? e.target.closest("a") : null;
+        if (!a) return;
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        var href = a.getAttribute("href") || "";
+        if (!href || href.charAt(0) === "#") return;
+        if (/^(tel:|mailto:|javascript:)/i.test(href)) return;
+        if (a.target && a.target !== "_self") return;
+        var url;
+        try { url = new URL(a.href, location.href); } catch (err) { return; }
+        if (url.origin !== location.origin) return;
+        if (url.pathname === location.pathname && url.search === location.search) return;
+
+        e.preventDefault();
+        w.classList.add("is-out");
+        var went = false;
+        var go = function () { if (!went) { went = true; location.href = a.href; } };
+        setTimeout(go, 430);
+        setTimeout(go, 900);           // fallback if the first timer is throttled
+      });
+
+      // coming back via the browser's cache: clear the wipe
+      window.addEventListener("pageshow", function () { w.classList.remove("is-out"); });
+    })();
+
+    /* ---- services marquee, homepage only ---- */
+    (function () {
+      var anchor = document.querySelector(".hero");
+      var isHome = !!document.querySelector(".trust-strip");
+      if (!anchor || !isHome) return;
+      var names = [];
+      document.querySelectorAll(".card--link h3").forEach(function (h) {
+        names.push(h.textContent.trim());
+      });
+      if (names.length < 3) return;
+      var once = names.map(function (n) {
+        return "<span>" + n + "<i>&bull;</i></span>";
+      }).join("");
+      var m = document.createElement("div");
+      m.className = "marquee";
+      m.setAttribute("aria-hidden", "true");
+      m.innerHTML = '<div class="marquee__row">' + once + once + "</div>";
+      anchor.insertAdjacentElement("afterend", m);
+    })();
+
+    /* ---- 3D tilt on cards, pointer devices only ---- */
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      document.querySelectorAll(".card--link").forEach(function (card) {
+        var raf = null;
+        card.addEventListener("pointermove", function (e) {
+          if (raf) return;
+          raf = requestAnimationFrame(function () {
+            raf = null;
+            var r = card.getBoundingClientRect();
+            var px = (e.clientX - r.left) / r.width - 0.5;
+            var py = (e.clientY - r.top) / r.height - 0.5;
+            card.classList.add("tilt");
+            card.classList.remove("tilt-off");
+            card.style.transform =
+              "perspective(900px) rotateX(" + (-py * 7).toFixed(2) + "deg) rotateY(" +
+              (px * 9).toFixed(2) + "deg) translateY(-6px)";
+          });
+        });
+        card.addEventListener("pointerleave", function () {
+          card.classList.remove("tilt");
+          card.classList.add("tilt-off");
+          card.style.transform = "";
+        });
+      });
+    }
+
+    /* ---- photographs drift inside their frames while scrolling ---- */
+    (function () {
+      var media = [].slice.call(document.querySelectorAll(".card__media"));
+      if (!media.length) return;
+      var pending = false;
+      var update = function () {
+        pending = false;
+        var vh = window.innerHeight;
+        media.forEach(function (img) {
+          var r = img.getBoundingClientRect();
+          if (r.bottom < -100 || r.top > vh + 100) return;
+          var mid = (r.top + r.height / 2 - vh / 2) / vh;   // -0.5 .. 0.5
+          img.style.transform = "scale(1.08) translateY(" + (mid * -14).toFixed(1) + "px)";
+        });
+      };
+      window.addEventListener("scroll", function () {
+        if (!pending) { pending = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      window.addEventListener("resize", update, { passive: true });
+      update();
+    })();
+  }
+
   /* ---- back to top ---- */
   (function () {
     var btn = document.createElement("button");
