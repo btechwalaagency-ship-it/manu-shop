@@ -12,6 +12,36 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---- one scroll loop -------------------------------------
+     Everything that reacts to scroll subscribes here. One passive
+     listener schedules one animation frame and runs every job
+     inside it. Four separate listeners each scheduling their own
+     frame is four times the work for the same result.          */
+  var scrollJobs = [];
+  var scrollQueued = false;
+  function runScrollJobs() {
+    scrollQueued = false;
+    var y = window.scrollY;
+    for (var i = 0; i < scrollJobs.length; i++) scrollJobs[i](y);
+  }
+  function onScrollTick() {
+    if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(runScrollJobs); }
+  }
+  window.addEventListener("scroll", onScrollTick, { passive: true });
+  window.addEventListener("resize", onScrollTick, { passive: true });
+  function onScrollAdd(fn) { scrollJobs.push(fn); fn(window.scrollY); }
+
+  /* ---- header gains weight once you leave the top ---- */
+  (function () {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+    var stuck = false;
+    onScrollAdd(function (y) {
+      var should = y > 8;
+      if (should !== stuck) { stuck = should; header.classList.toggle("is-stuck", stuck); }
+    });
+  })();
+
   /* ---- fade photographs in once they have actually decoded ---- */
   (function () {
     var imgs = document.querySelectorAll("img.card__media, .hero__art, .logo--footer img");
@@ -32,18 +62,12 @@
     bar.className = "progress";
     bar.setAttribute("aria-hidden", "true");
     document.body.appendChild(bar);
-    var ticking = false;
-    var onFrame = function () {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      var pct = max > 0 ? window.scrollY / max : 0;
-      bar.style.transform = "scaleX(" + pct.toFixed(4) + ")";
-      document.documentElement.style.setProperty("--sy", String(Math.round(window.scrollY)));
-      ticking = false;
-    };
-    window.addEventListener("scroll", function () {
-      if (!ticking) { ticking = true; requestAnimationFrame(onFrame); }
-    }, { passive: true });
-    onFrame();
+    var docEl = document.documentElement;
+    onScrollAdd(function (y) {
+      var max = docEl.scrollHeight - window.innerHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? (y / max).toFixed(4) : 0) + ")";
+      docEl.style.setProperty("--sy", String(y | 0));
+    });
   }
 
   /* ---- split the hero headline into words so they can arrive in turn ---- */
@@ -167,6 +191,15 @@
       m.setAttribute("aria-hidden", "true");
       m.innerHTML = '<div class="marquee__row">' + once + once + "</div>";
       anchor.insertAdjacentElement("afterend", m);
+
+      /* An infinite animation keeps the compositor busy even when it is
+         nowhere near the viewport. Stop it once it scrolls away. */
+      if ("IntersectionObserver" in window) {
+        var row = m.querySelector(".marquee__row");
+        new IntersectionObserver(function (es) {
+          row.style.animationPlayState = es[0].isIntersecting ? "running" : "paused";
+        }, { rootMargin: "100px 0px" }).observe(m);
+      }
     })();
 
     /* ---- 3D tilt on cards, pointer devices only ---- */
@@ -199,22 +232,39 @@
     (function () {
       var media = [].slice.call(document.querySelectorAll(".card__media"));
       if (!media.length) return;
-      var pending = false;
-      var update = function () {
-        pending = false;
+
+      /* Only the images actually on screen are measured each frame.
+         An observer keeps that set current, so a page with 20 cards
+         costs the same per frame as one with 3. will-change is set
+         only while an image is live, so idle cards hold no GPU layer. */
+      var live = [];
+      if ("IntersectionObserver" in window) {
+        var vio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = live.indexOf(e.target);
+            if (e.isIntersecting && i === -1) {
+              live.push(e.target);
+              e.target.style.willChange = "transform";
+            } else if (!e.isIntersecting && i !== -1) {
+              live.splice(i, 1);
+              e.target.style.willChange = "";
+            }
+          });
+        }, { rootMargin: "120px 0px" });
+        media.forEach(function (m) { vio.observe(m); });
+      } else {
+        live = media;
+      }
+
+      onScrollAdd(function () {
+        if (!live.length) return;
         var vh = window.innerHeight;
-        media.forEach(function (img) {
-          var r = img.getBoundingClientRect();
-          if (r.bottom < -100 || r.top > vh + 100) return;
-          var mid = (r.top + r.height / 2 - vh / 2) / vh;   // -0.5 .. 0.5
-          img.style.transform = "scale(1.08) translateY(" + (mid * -14).toFixed(1) + "px)";
-        });
-      };
-      window.addEventListener("scroll", function () {
-        if (!pending) { pending = true; requestAnimationFrame(update); }
-      }, { passive: true });
-      window.addEventListener("resize", update, { passive: true });
-      update();
+        for (var i = 0; i < live.length; i++) {
+          var r = live[i].getBoundingClientRect();
+          var mid = (r.top + r.height / 2 - vh / 2) / vh;
+          live[i].style.transform = "scale(1.08) translateY(" + (mid * -14).toFixed(1) + "px)";
+        }
+      });
     })();
   }
 
@@ -335,12 +385,10 @@
     });
     document.body.appendChild(btn);
     var shown = false;
-    var toggle = function () {
-      var should = window.scrollY > 600;
+    onScrollAdd(function (y) {
+      var should = y > 600;
       if (should !== shown) { shown = should; btn.classList.toggle("is-shown", shown); }
-    };
-    window.addEventListener("scroll", toggle, { passive: true });
-    toggle();
+    });
   })();
 
   /* ---- mobile nav ---- */
@@ -377,64 +425,37 @@
     if (path === here) a.setAttribute("aria-current", "page");
   });
 
-  /* ---- contact form ----
-     If no form backend is configured yet, fall back to opening the
-     visitor's mail client with the enquiry pre-filled, so the form
-     still works the day the site goes live. Swap the form's action
-     for a Formspree endpoint to collect submissions properly. */
+  /* ---- contact form -> WhatsApp ----
+     The form has no server behind it, so submitting opens WhatsApp with
+     the enquiry already written out. The visitor still has to press send
+     in WhatsApp, which is the honest behaviour - we cannot send on their
+     behalf and should not pretend the message has gone. */
   var form = document.querySelector(".form");
-  if (form && /\[YOUR-FORM-ID\]/.test(form.getAttribute("action") || "")) {
+  if (form) {
+    var WA = "61470282957";
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var g = function (n) {
         var el = form.querySelector('[name="' + n + '"]');
         return el ? el.value.trim() : "";
       };
-      var subject = "Website enquiry" + (g("service") ? " \u2014 " + g("service") : "");
-      var body = [
-        "Name: " + g("name"),
-        "Phone: " + g("phone"),
-        "Email: " + g("email"),
-        "Service: " + (g("service") || "Not specified"),
-        "",
-        g("message")
-      ].join("\n");
-      window.location.href = "mailto:mmrepairmaster@gmail.com?subject=" +
-        encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      var lines = ["Hi MM Repair Master, I'd like to book a repair."];
+      lines.push("");
+      lines.push("Name: " + (g("name") || "-"));
+      lines.push("Phone: " + (g("phone") || "-"));
+      if (g("email")) lines.push("Email: " + g("email"));
+      lines.push("Service: " + (g("service") || "Not sure"));
+      if (g("message")) { lines.push(""); lines.push(g("message")); }
+      lines.push("");
+      lines.push("(Sent from the website - 10% online booking discount)");
+
+      var url = "https://wa.me/" + WA + "?text=" + encodeURIComponent(lines.join("\n"));
+      var win = window.open(url, "_blank", "noopener");
+      if (!win) window.location.href = url;   // popup blocked: go directly
+
+      var note = form.querySelector(".form__sent");
+      if (note) note.hidden = false;
     });
-  }
-
-  /* ---- photo upgrade ----
-     Every illustration carries a data-photo path. If a real photograph is
-     present at that path it is swapped in; if the file isn't there the
-     illustration simply stays. Nothing ever renders broken, so photos can
-     be added one at a time without touching any HTML. */
-  document.querySelectorAll("img[data-photo]").forEach(function (img) {
-    var src = img.getAttribute("data-photo");
-    if (!src) return;
-    var probe = new Image();
-    probe.onload = function () {
-      if (probe.naturalWidth > 1) {
-        img.src = src;
-        img.classList.add("has-photo");
-      }
-    };
-    probe.src = src;
-  });
-
-  /* ---- header gains a shadow once scrolled ---- */
-  var header = document.querySelector(".site-header");
-  if (header) {
-    var stuck = false;
-    var onScroll = function () {
-      var should = window.scrollY > 8;
-      if (should !== stuck) {
-        stuck = should;
-        header.classList.toggle("is-stuck", stuck);
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
   }
 
   /* ---- scroll reveal ---- */

@@ -66,12 +66,12 @@
           <span class="promo-card__tag">10% OFF</span>
           <div>
             <strong>Book your repair online and save 10%</strong>
-            <p>Send the form below instead of walking in and we&rsquo;ll take 10% off the repair. Mention it when you drop the device off.</p>
+            <p>Fill in the form and send it on WhatsApp instead of walking in, and we&rsquo;ll take 10% off the repair.</p>
           </div>
         </div>
-        <h2>Send a message</h2>
-        <p class="lede" style="font-size:1rem">The more detail you give us, the more useful our first answer will be.</p>
-        <form class="form" method="POST" action="https://formspree.io/f/[YOUR-FORM-ID]" style="margin-top:1.5rem">
+        <h2>Book on WhatsApp</h2>
+        <p class="lede" style="font-size:1rem">Fill this in and it opens WhatsApp with everything written out. The more detail, the more useful our first reply.</p>
+        <form class="form" style="margin-top:1.5rem">
           <div class="field">
             <label for="name">Your name <span class="req">*</span></label>
             <input id="name" name="name" type="text" autocomplete="name" required>
@@ -97,8 +97,12 @@
             <label for="message">Describe the problem <span class="req">*</span></label>
             <textarea id="message" name="message" required placeholder="e.g. Laptop won't turn on, screen stays black. Dell, about 3 years old."></textarea>
           </div>
-          <button class="btn btn--primary" type="submit">Send message</button>
-          <p class="form__note">We reply to every enquiry. Your details are used to answer your enquiry and nothing else.</p>
+          <button class="btn btn--primary btn--wa" type="submit">
+            <svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+            Send on WhatsApp
+          </button>
+          <p class="form__sent" hidden>WhatsApp should have opened with your details. Press send there to reach us.</p>
+          <p class="form__note">This opens WhatsApp with your details already written out &mdash; you just press send. Prefer email? <a href="mailto:mmrepairmaster@gmail.com" style="color:var(--accent-text)">mmrepairmaster@gmail.com</a></p>
         </form>
       </div>
 
