@@ -157,3 +157,11 @@ text-decoration:none;margin-left:auto}
   .fab-stack{bottom:76px;right:12px}
   .fab{width:50px;height:50px}
 }
+
+/* The 44px call and menu buttons leave a little less room for the logo
+   text, which tipped the address into an ellipsis on 320px screens.
+   Tighten it a touch more at that size so it still reads in full. */
+@media (max-width:339px){
+  .logo__text small{font-size:.465rem;letter-spacing:0}
+  .logo__mark{width:34px;height:34px}
+}
