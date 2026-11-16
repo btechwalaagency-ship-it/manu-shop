@@ -85,6 +85,12 @@ try {
 if (sessionStorage.getItem("seenIntro")) return;
 sessionStorage.setItem("seenIntro", "1");
 } catch (e) {  }
+/* A brand moment is only worth it when the page is already quick. On a
+slow link, or when the visitor has asked to save data, the curtain is
+just a second of staring at a logo while they wait. */
+var conn = navigator.connection || {};
+if (conn.saveData) return;
+if (conn.effectiveType && /2g|^3g$/.test(conn.effectiveType)) return;
 var base = document.querySelector('link[rel="apple-touch-icon"]');
 var logo = base ? base.getAttribute("href") : "assets/icon.png";
 var c = document.createElement("div");
@@ -97,8 +103,8 @@ if (!c.parentNode || c.classList.contains("is-gone")) return;
 c.classList.add("is-gone");
 setTimeout(function () { if (c.parentNode) c.parentNode.removeChild(c); }, 700);
 };
-window.addEventListener("load", function () { setTimeout(lift, 950); });
-setTimeout(lift, 2200);
+window.addEventListener("load", function () { setTimeout(lift, 260); });
+setTimeout(lift, 1200);
 })();
 (function () {
 var w = document.createElement("div");
