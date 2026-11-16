@@ -130,6 +130,8 @@ window.addEventListener("pageshow", function () { w.classList.remove("is-out"); 
 var anchor = document.querySelector(".hero");
 var isHome = !!document.querySelector(".trust-strip");
 if (!anchor || !isHome) return;
+/* not built at all on phones - it is hidden there anyway */
+if (window.matchMedia("(max-width: 879px)").matches) return;
 var names = [];
 document.querySelectorAll(".card--link h3").forEach(function (h) {
 names.push(h.textContent.trim());
@@ -177,6 +179,9 @@ card.style.transform = "";
 (function () {
 var media = [].slice.call(document.querySelectorAll(".card__media"));
 if (!media.length) return;
+/* skip the per-frame parallax on phones - it is scroll work for an
+effect that barely reads on a small screen */
+if (window.matchMedia("(max-width: 879px)").matches) return;
 var live = [];
 if ("IntersectionObserver" in window) {
 var vio = new IntersectionObserver(function (entries) {
