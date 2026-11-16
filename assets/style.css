@@ -711,3 +711,88 @@ img.logo__mark {
 .to-top:hover { background: var(--surface-2); }
 .to-top:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 @media (min-width: 880px) { .to-top { left: 24px; bottom: 24px; } }
+
+
+/* =========================================================
+   Motion, part three - more movement
+   ========================================================= */
+
+/* scroll progress bar - structure outside the query so it is simply
+   invisible, not broken, when motion is reduced */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 90;
+  background: var(--accent); transform: scaleX(0); transform-origin: left center;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) { .progress { display: none; } }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---- header shrinks as you scroll away from the top ---- */
+  .site-header__inner { transition: min-height .3s cubic-bezier(.22,.8,.3,1); }
+  .site-header.is-stuck .site-header__inner { min-height: 56px; }
+  .logo__mark, .logo__text { transition: transform .3s cubic-bezier(.22,.8,.3,1); }
+  .site-header.is-stuck .logo__mark { transform: scale(.86); }
+  .site-header.is-stuck .logo__text { transform: scale(.92); transform-origin: left center; }
+
+  /* ---- headline arrives a word at a time ---- */
+  @keyframes wordIn {
+    from { opacity: 0; transform: translateY(22px) rotate(2deg); }
+    to   { opacity: 1; transform: none; }
+  }
+  .hero h1 .w {
+    display: inline-block;
+    animation: wordIn .62s cubic-bezier(.22,.8,.3,1) backwards;
+  }
+  /* when words are split, the block-level h1 animation is switched off */
+  .hero h1.is-split { animation: none; }
+
+  /* ---- hero glow drifts as you scroll ---- */
+  .hero::after { transform: translateY(calc(var(--sy, 0) * .18px)); will-change: transform; }
+
+  /* ---- service-page artwork breathes ---- */
+  @keyframes floaty {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-9px); }
+  }
+  .hero__art.is-loaded { animation: heroIn .72s cubic-bezier(.22,.8,.3,1) backwards .26s,
+                                    floaty 6.5s ease-in-out 1.1s infinite; }
+
+  /* ---- cards arrive from alternating sides ---- */
+  .grid--3 > .reveal:nth-child(3n+1),
+  .grid--2 > .reveal:nth-child(2n+1) { transform: translateY(18px) translateX(-22px); }
+  .grid--3 > .reveal:nth-child(3n),
+  .grid--2 > .reveal:nth-child(2n)   { transform: translateY(18px) translateX(22px); }
+  .grid--3 > .reveal.is-in,
+  .grid--2 > .reveal.is-in { transform: none; }
+
+  /* ---- light sweeps across a primary button on hover ---- */
+  .btn--primary { position: relative; overflow: hidden; isolation: isolate; }
+  .btn--primary::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(105deg, transparent 35%,
+                rgba(255,255,255,.55) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform .6s cubic-bezier(.22,.8,.3,1);
+  }
+  .btn--primary:hover::before { transform: translateX(120%); }
+
+  /* ---- floating buttons swing in on load ---- */
+  @keyframes fabIn {
+    from { opacity: 0; transform: translateY(14px) scale(.8); }
+    to   { opacity: 1; transform: none; }
+  }
+  .fab { animation: fabIn .5s cubic-bezier(.34,1.3,.64,1) backwards; }
+  .fab-stack .fab:nth-child(1) { animation-delay: .55s; }
+  .fab-stack .fab:nth-child(2) { animation-delay: .65s; }
+  .fab-stack .fab:nth-child(3) { animation-delay: .75s; }
+
+  /* ---- section headings get a rule that draws itself ---- */
+  .section h2.reveal::after {
+    content: ""; display: block; height: 3px; width: 56px; border-radius: 3px;
+    background: var(--accent); margin-top: .7rem;
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform .6s cubic-bezier(.22,.8,.3,1) .25s;
+  }
+  .section h2.reveal.is-in::after { transform: scaleX(1); }
+}

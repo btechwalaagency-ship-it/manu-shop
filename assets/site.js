@@ -26,6 +26,60 @@
     });
   })();
 
+  /* ---- scroll progress bar + hero glow drift ---- */
+  if (!reduced) {
+    var bar = document.createElement("div");
+    bar.className = "progress";
+    bar.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bar);
+    var ticking = false;
+    var onFrame = function () {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? window.scrollY / max : 0;
+      bar.style.transform = "scaleX(" + pct.toFixed(4) + ")";
+      document.documentElement.style.setProperty("--sy", String(Math.round(window.scrollY)));
+      ticking = false;
+    };
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(onFrame); }
+    }, { passive: true });
+    onFrame();
+  }
+
+  /* ---- split the hero headline into words so they can arrive in turn ---- */
+  if (!reduced) {
+    var h1 = document.querySelector(".hero h1");
+    if (h1) {
+      var i = 0;
+      var walk = function (node) {
+        var out = document.createDocumentFragment();
+        [].slice.call(node.childNodes).forEach(function (child) {
+          if (child.nodeType === 3) {
+            child.textContent.split(/(\s+)/).forEach(function (tok) {
+              if (!tok) return;
+              if (/^\s+$/.test(tok)) { out.appendChild(document.createTextNode(tok)); return; }
+              var sp = document.createElement("span");
+              sp.className = "w";
+              sp.textContent = tok;
+              sp.style.animationDelay = (0.10 + i * 0.055).toFixed(3) + "s";
+              i++;
+              out.appendChild(sp);
+            });
+          } else if (child.nodeType === 1) {
+            var clone = child.cloneNode(false);
+            clone.appendChild(walk(child));
+            out.appendChild(clone);
+          }
+        });
+        return out;
+      };
+      var frag = walk(h1);
+      h1.textContent = "";
+      h1.appendChild(frag);
+      h1.classList.add("is-split");
+    }
+  }
+
   /* ---- back to top ---- */
   (function () {
     var btn = document.createElement("button");
