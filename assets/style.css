@@ -165,3 +165,65 @@ text-decoration:none;margin-left:auto}
   .logo__text small{font-size:.465rem;letter-spacing:0}
   .logo__mark{width:34px;height:34px}
 }
+
+/* ---- location strip, phones and small tablets only ---------------
+   A highlighted band directly under the header carrying the shopping
+   centre name, so it is impossible to miss on a phone. Tapping it opens
+   directions. Hidden on desktop, where the address already sits in the
+   header and the footer. The height is fixed so it cannot shift the
+   page while the fonts settle. */
+.locbar{display:none}
+@media (max-width:879px){
+  .locbar{
+    display:flex;align-items:center;gap:.6rem;
+    height:54px;padding:0 14px;
+    background:linear-gradient(100deg,#ffb020 0%,#ffc657 100%);
+    color:var(--accent-ink);text-decoration:none;
+    border-bottom:1px solid rgba(26,18,3,.16);
+    position:relative;overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .locbar__pin{flex:none;display:grid;place-items:center;
+    width:26px;height:26px;border-radius:50%;
+    background:rgba(26,18,3,.1)}
+  .locbar__text{display:grid;min-width:0;line-height:1.22}
+  .locbar__text strong{
+    font-family:var(--font-head);font-weight:700;font-size:.8rem;
+    letter-spacing:.005em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .locbar__text small{
+    font-size:.655rem;font-weight:600;letter-spacing:.015em;
+    color:rgba(26,18,3,.72);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .locbar__go{flex:none;margin-left:auto;display:grid;place-items:center;
+    width:24px;height:24px;border-radius:50%;
+    background:rgba(26,18,3,.1)}
+  .locbar:active{filter:brightness(.96)}
+  .locbar:focus-visible{outline:3px solid var(--navy);outline-offset:-3px}
+}
+@media (max-width:339px){
+  .locbar{gap:.45rem;padding:0 11px}
+  .locbar__text strong{font-size:.745rem}
+  .locbar__text small{font-size:.615rem}
+}
+/* a slow, quiet pulse on the pin so the eye catches it once */
+@media (max-width:879px) and (prefers-reduced-motion:no-preference){
+  .locbar__pin::after{content:"";position:absolute;left:14px;
+    width:26px;height:26px;border-radius:50%;
+    border:2px solid rgba(26,18,3,.45);
+    animation:locPulse 3.4s ease-out infinite}
+  @keyframes locPulse{
+    0%{transform:scale(1);opacity:.65}
+    70%{transform:scale(1.65);opacity:0}
+    100%{transform:scale(1.65);opacity:0}}
+}
+
+/* With the highlighted strip carrying the shopping centre name on
+   phones, repeating it in the header too reads as a mistake and
+   crowds the logo. The strip is far more visible, so the header line
+   gives way to it below 880px and stays on desktop, where there is
+   no strip. */
+@media (max-width:879px){
+  .logo__text small{display:none}
+  .site-header__inner{height:58px;min-height:58px}
+}
