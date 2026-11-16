@@ -45,6 +45,9 @@
   /* ---- fade photographs in once they have actually decoded ---- */
   (function () {
     var imgs = document.querySelectorAll("img.card__media, .hero__art, .logo--footer img");
+    /* Photos are in src directly now, so they load with or without script;
+       this only adds the fade. A failed photo falls back to its
+       illustration via the tag's own onerror. */
     imgs.forEach(function (img) {
       if (img.complete && img.naturalWidth > 0) { img.classList.add("is-loaded"); return; }
       img.addEventListener("load", function () { img.classList.add("is-loaded"); });
@@ -334,13 +337,20 @@
     }
 
     badges.forEach(function (b) {
-      b.className = "hours-status " + b.className.replace(/hours-status\S*/g, "").trim() +
-                    (b.hasAttribute("data-lg") ? "" : "");
-      b.classList.add("hours-status", state);
+      /* Add classes, never rebuild className - the markup already carries
+         size modifiers (--hdr, --lg) that must survive. */
+      b.classList.add("hours-status");
+      b.classList.remove("is-open", "is-shut");
+      b.classList.add(state);
       if (b.getAttribute("data-hours-status") === "lg") b.classList.add("hours-status--lg");
-      b.innerHTML = '<span class="hours-status__dot"></span>' +
-                    '<span>' + main + '</span>' +
-                    '<span class="hours-status__sub">' + sub + '</span>';
+
+      var where = b.getAttribute("data-hours-status");
+      var text = (where === "header")
+        ? '<span>' + (main === "Open now" ? "Open" : "Closed") + '</span>' +
+          '<span class="hours-status__sub">' + sub.replace("opens ", "opens ") + '</span>'
+        : '<span>' + main + '</span><span class="hours-status__sub">' + sub + '</span>';
+
+      b.innerHTML = '<span class="hours-status__dot"></span>' + text;
       b.setAttribute("role", "status");
       requestAnimationFrame(function () { b.classList.add("is-ready"); });
     });

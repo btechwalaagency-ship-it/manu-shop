@@ -1027,3 +1027,25 @@ html:not(.js) .hours-status { opacity: 1; transform: none; }
   margin: 0; font-size: .9rem; font-weight: 600;
   color: var(--accent-text);
 }
+
+
+/* ---- opening hours in the header and mobile menu ---- */
+.hours-status--hdr {
+  display: none;                       /* shown from 980px, where there is room */
+  font-size: .78rem; padding: .3rem .6rem;
+  border-color: var(--border); background: var(--surface); color: var(--ink);
+  white-space: nowrap;
+}
+@media (min-width: 980px) { .hours-status--hdr { display: inline-flex; } }
+.hours-status--hdr .hours-status__sub { font-weight: 600; }
+
+.mnav-hours {
+  padding: .9rem .25rem 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: .25rem;
+}
+.mnav-hours .hours-status { margin-bottom: .7rem; }
+.hours-mini--light li span:first-child { color: var(--ink); }
+.hours-mini--light li { color: var(--muted); }
+.hours-mini--light li.is-today,
+.hours-mini--light li.is-today span:first-child { color: var(--accent-text); font-weight: 700; }

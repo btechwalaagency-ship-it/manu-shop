@@ -38,12 +38,21 @@
       <span class="logo__text"><strong>MM</strong><em>Repair Master</em><small>The Spring Shopping Centre, Beechboro</small></span>
     </a>
     <nav class="nav" aria-label="Main"><a href="../index.html">Home</a><a href="../services.html">Services</a><a href="../about.html">About</a><a href="../contact.html">Contact</a></nav>
+    <div class="hours-status hours-status--hdr" data-hours-status="header"></div>
     <a class="btn btn--primary header-cta" href="tel:+61470282957"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.4 1.9.6 2.9.8a2 2 0 0 1 1.7 2z"/></svg> Call 0470 282 957</a>
     <button class="burger" type="button" aria-expanded="false" aria-label="Open menu" aria-controls="mnav">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
   </div>
   <div class="mobile-nav" id="mnav">
+    <div class="mnav-hours">
+      <div class="hours-status hours-status--lg" data-hours-status="mob"></div>
+      <ul class="hours-mini hours-mini--light">
+        <li><span>Mon &ndash; Fri</span><span>9:00am &ndash; 6:00pm</span></li>
+        <li><span>Saturday</span><span>9:00am &ndash; 5:00pm</span></li>
+        <li><span>Sunday</span><span>11:00am &ndash; 5:00pm</span></li>
+      </ul>
+    </div>
     <a href="../index.html">Home</a><a href="../services.html">Services</a><a href="../about.html">About</a><a href="../contact.html">Contact</a>
     <a class="btn btn--primary" href="tel:+61470282957">Call 0470 282 957</a>
   </div>
@@ -60,7 +69,7 @@
         <a class="btn btn--onnavy" href="../contact.html">Request a quote</a>
       </div>
     </div>
-    <img class="hero__art" src="../assets/img/device-sales.svg" data-photo="../assets/photos/device-sales.jpg" alt="" width="800" height="450" decoding="async">
+    <img class="hero__art" src="../assets/photos/device-sales.jpg" alt="" width="800" height="450" decoding="async" onerror="this.onerror=null;this.src='../assets/img/device-sales.svg'">
   </div>
 </section>
 
@@ -111,17 +120,17 @@
     <h2 class="reveal">Other services</h2>
     <div class="grid grid--3" style="margin-top:2.5rem">
         <a class="card card--link reveal" href="phone-repair.html">
-          <img class="card__media" src="../assets/img/phone-repair.svg" data-photo="../assets/photos/phone-repair.jpg" alt="" loading="lazy" width="800" height="450">
+          <img class="card__media" src="../assets/photos/phone-repair.jpg" alt="" loading="lazy" width="800" height="450" onerror="this.onerror=null;this.src='../assets/img/phone-repair.svg'">
           <h3>Phone Repair</h3>
           <p>Cracked screens, flat batteries, charging ports and water damage &mdash; most phones fixed while you wait.</p>
         </a>
         <a class="card card--link reveal" href="computer-laptop-repair.html">
-          <img class="card__media" src="../assets/img/computer-laptop-repair.svg" data-photo="../assets/photos/computer-laptop-repair.jpg" alt="" loading="lazy" width="800" height="450">
+          <img class="card__media" src="../assets/photos/computer-laptop-repair.jpg" alt="" loading="lazy" width="800" height="450" onerror="this.onerror=null;this.src='../assets/img/computer-laptop-repair.svg'">
           <h3>Laptop &amp; Computer Repair</h3>
           <p>MacBook and Windows &mdash; screens, batteries, failed drives, machines that won&rsquo;t boot, and laptops that have slowed to a crawl.</p>
         </a>
         <a class="card card--link reveal" href="data-recovery.html">
-          <img class="card__media" src="../assets/img/data-recovery.svg" data-photo="../assets/photos/data-recovery.jpg" alt="" loading="lazy" width="800" height="450">
+          <img class="card__media" src="../assets/photos/data-recovery.jpg" alt="" loading="lazy" width="800" height="450" onerror="this.onerror=null;this.src='../assets/img/data-recovery.svg'">
           <h3>Data Recovery</h3>
           <p>Photos and files recovered from drives, phones and cards that have failed, been formatted or stopped mounting.</p>
         </a>
