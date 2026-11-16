@@ -85,6 +85,21 @@
     probe.src = src;
   });
 
+  /* ---- header gains a shadow once scrolled ---- */
+  var header = document.querySelector(".site-header");
+  if (header) {
+    var stuck = false;
+    var onScroll = function () {
+      var should = window.scrollY > 8;
+      if (should !== stuck) {
+        stuck = should;
+        header.classList.toggle("is-stuck", stuck);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
   /* ---- scroll reveal ---- */
   var targets = document.querySelectorAll(".reveal");
   if (!targets.length) return;
@@ -104,7 +119,7 @@
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
 
   targets.forEach(function (el, i) {
-    el.style.transitionDelay = (Math.min(i % 4, 3) * 70) + "ms";
+    el.style.transitionDelay = (Math.min(i % 3, 2) * 90) + "ms";
     io.observe(el);
   });
 })();
