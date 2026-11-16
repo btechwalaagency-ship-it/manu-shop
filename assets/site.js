@@ -272,6 +272,8 @@ var text = (where === "header")
 '<span class="hours-status__sub">' + sub.replace("opens ", "opens ") + '</span>'
 : '<span>' + main + '</span><span class="hours-status__sub">' + sub + '</span>';
 b.innerHTML = '<span class="hours-status__dot"></span>' + text;
+      // readable when flattened to plain text (screen readers, previews)
+      b.setAttribute("aria-label", main + " \u2014 " + sub);
 b.setAttribute("role", "status");
 requestAnimationFrame(function () { b.classList.add("is-ready"); });
 });

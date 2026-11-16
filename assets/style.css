@@ -31,3 +31,37 @@ text-decoration:none;margin-left:auto}
   .promo-pill__flash,.promo-card__tag{animation:none}
   .hours-status.is-open .hours-status__dot{animation:none}
 }
+
+/* ---- mobile header: dark, compact, never wrapping ----
+   320px has to fit logo + wordmark + call + menu. The address and the
+   "Call" label are the first things to go as width runs out, rather
+   than letting anything wrap and triple the header height. */
+@media (max-width:879px){
+  .site-header{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.1)}
+  .site-header.is-stuck{background:var(--navy);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+  .site-header__inner{min-height:62px;gap:.5rem}
+  .logo{gap:.5rem;min-width:0}
+  img.logo__mark{width:40px;height:40px}
+  .logo__text{min-width:0}
+  .logo__text strong{color:#fff;font-size:1.08rem}
+  .logo__text em{color:var(--accent);font-size:.54rem}
+  .logo__text small{
+    display:block;color:var(--on-navy-muted);font-size:.55rem;
+    letter-spacing:.02em;margin-top:1px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .burger{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff;
+    width:42px;height:42px;margin-left:0}
+  .hdr-call{width:42px;height:42px;padding:0;margin-left:auto}
+  /* hours pill stays out of the mobile header no matter what */
+  .hours-status--hdr{display:none!important}
+}
+/* roomier phones get the "Call" label spelled out */
+@media (min-width:400px) and (max-width:879px){
+  .hdr-call{width:auto;padding:0 .8rem;gap:.4rem;
+    display:inline-flex;align-items:center;justify-content:center}
+  .hdr-call::after{content:"Call";font-family:var(--font-head);font-weight:700;font-size:.9rem}
+}
+/* below 360px the address has nowhere to go */
+@media (max-width:359px){
+  .logo__text small{display:none}
+}
