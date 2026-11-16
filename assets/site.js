@@ -6,6 +6,48 @@
 (function () {
   "use strict";
 
+  /* Mark that JavaScript ran, so CSS can safely hide things it will
+     reveal later. Without this a JS failure would leave images invisible. */
+  document.documentElement.classList.add("js");
+
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- fade photographs in once they have actually decoded ---- */
+  (function () {
+    var imgs = document.querySelectorAll("img.card__media, .hero__art, .logo--footer img");
+    imgs.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) { img.classList.add("is-loaded"); return; }
+      img.addEventListener("load", function () { img.classList.add("is-loaded"); });
+      img.addEventListener("error", function () { img.classList.add("is-loaded"); });
+    });
+    // belt and braces: never leave an image hidden
+    window.addEventListener("load", function () {
+      imgs.forEach(function (img) { img.classList.add("is-loaded"); });
+    });
+  })();
+
+  /* ---- back to top ---- */
+  (function () {
+    var btn = document.createElement("button");
+    btn.className = "to-top";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Back to top");
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" ' +
+      'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
+      'aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    });
+    document.body.appendChild(btn);
+    var shown = false;
+    var toggle = function () {
+      var should = window.scrollY > 600;
+      if (should !== shown) { shown = should; btn.classList.toggle("is-shown", shown); }
+    };
+    window.addEventListener("scroll", toggle, { passive: true });
+    toggle();
+  })();
+
   /* ---- mobile nav ---- */
   var burger = document.querySelector(".burger");
   var mnav = document.querySelector(".mobile-nav");

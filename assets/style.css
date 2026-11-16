@@ -618,3 +618,96 @@ img.logo__mark {
   }
   .steps li.is-in::before { animation: stepPop .5s cubic-bezier(.34,1.3,.64,1) backwards .12s; }
 }
+
+
+/* =========================================================
+   Motion, part two - the rest of the site
+   Still entirely inside prefers-reduced-motion:no-preference.
+   ========================================================= */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---- mobile menu drops in, links follow ---- */
+  @keyframes navDrop {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .mobile-nav.is-open { animation: navDrop .28s cubic-bezier(.22,.8,.3,1); }
+  .mobile-nav.is-open a,
+  .mobile-nav.is-open .btn { animation: navDrop .34s cubic-bezier(.22,.8,.3,1) backwards; }
+  .mobile-nav.is-open a:nth-child(1)   { animation-delay: .04s; }
+  .mobile-nav.is-open a:nth-child(2)   { animation-delay: .08s; }
+  .mobile-nav.is-open a:nth-child(3)   { animation-delay: .12s; }
+  .mobile-nav.is-open a:nth-child(4)   { animation-delay: .16s; }
+  .mobile-nav.is-open .btn             { animation-delay: .20s; }
+  .burger svg { transition: transform .3s cubic-bezier(.22,.8,.3,1); }
+  .burger[aria-expanded="true"] svg { transform: rotate(90deg); }
+
+  /* ---- photographs fade in once decoded, instead of popping ---- */
+  /* Scoped to .js so that with JavaScript off nothing is ever hidden. */
+  .js img.card__media,
+  .js .hero__art,
+  .js .logo--footer img { opacity: 0; transition: opacity .55s ease; }
+  .js img.is-loaded { opacity: 1; }
+
+  /* ---- logo mark tilts on hover ---- */
+  .logo__mark { transition: transform .35s cubic-bezier(.34,1.25,.64,1); }
+  .logo:hover .logo__mark { transform: rotate(-7deg) scale(1.07); }
+
+  /* ---- buttons press properly ---- */
+  .btn:active { transform: translateY(0) scale(.985); }
+  .btn svg { transition: transform .25s cubic-bezier(.22,.8,.3,1); }
+  .btn--primary:hover svg { transform: scale(1.12); }
+
+  /* ---- trust badges lift ---- */
+  .trust-strip span {
+    transition: transform .22s cubic-bezier(.22,.8,.3,1),
+                background-color .22s ease, border-color .22s ease;
+  }
+  .trust-strip span:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.13);
+    border-color: rgba(255,255,255,.22);
+  }
+
+  /* ---- plain cards (the "what we handle" grid) lift too ---- */
+  .card:not(.card--link) { transition: transform .22s cubic-bezier(.22,.8,.3,1), box-shadow .22s ease; }
+  .card:not(.card--link):hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+  /* ---- list links slide toward the pointer ---- */
+  .site-footer ul a, .detail-list a {
+    display: inline-block;
+    transition: transform .2s cubic-bezier(.22,.8,.3,1), color .2s ease;
+  }
+  .site-footer ul a:hover, .detail-list a:hover { transform: translateX(3px); }
+
+  /* ---- hours rows highlight under the cursor ---- */
+  .hours tbody tr { transition: background-color .2s ease; }
+  .hours tbody tr:hover { background: var(--surface); }
+
+  /* ---- form fields ease into focus ---- */
+  .field input, .field select, .field textarea {
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+  }
+
+  /* ---- back to top slides up into place ---- */
+  .to-top { transform: translateY(10px) scale(.9);
+            transition: opacity .28s ease, transform .28s cubic-bezier(.22,.8,.3,1); }
+  .to-top.is-shown { transform: none; }
+}
+
+/* Back-to-top button itself - styling lives outside the motion query so
+   it still works, just without the fade, when motion is reduced. */
+.to-top {
+  position: fixed; left: 14px; bottom: 70px; z-index: 70;
+  opacity: 0; pointer-events: none;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.to-top.is-shown { opacity: 1; pointer-events: auto; }
+.to-top:hover { background: var(--surface-2); }
+.to-top:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@media (min-width: 880px) { .to-top { left: 24px; bottom: 24px; } }
